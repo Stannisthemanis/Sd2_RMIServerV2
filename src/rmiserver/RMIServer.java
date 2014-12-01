@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.Policy;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,10 +16,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
 
 public class RMIServer extends UnicastRemoteObject implements RMIServerInterface {
 	private static final long		serialVersionUID	= 20141107L;
 	private HashMap<String, String>	users;
+	private ArrayList <String> onlineUsers = new ArrayList<String>();
 	
 	public RMIServer() throws RemoteException {
 		super();
@@ -31,6 +34,9 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 	}
 	
 	public static void main(String[] args) throws RemoteException {
+//		if(System.getSecurityManager() == null) {
+//			System.setSecurityManager(new RMISecurityManager()); 
+//			}  
 		RMIServerInterface s = new RMIServer();
 		LocateRegistry.createRegistry(1099).rebind("server", s);
 		System.out.println("Server ready...");
@@ -44,12 +50,12 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 		String userName = "root";
 		String password = "Roxkax77";
 		try {
+			System.out.println("ver se e igual");
 			if (InetAddress.getLocalHost().equals(InetAddress.getByName("ricardo"))) {
-				userName = "userDoRicardo";
-				password = "passDoRicardo";
+				userName = "root";
+				password = "Bh2011";
 			}
 		} catch (UnknownHostException e) {
-			
 		}
 		Class.forName(driver).newInstance();
 		return DriverManager.getConnection(url + dbName, userName, password);
@@ -70,6 +76,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 		return false;
 	}
 	
+
 	public boolean userExists(String username) throws RemoteException {
 		String query = "SELECT id_user FROM user1 WHERE username = '" + username + "'";
 		try {
@@ -86,7 +93,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 	}
 	
 	public boolean tryLogin(String username, String password) throws RemoteException {
-		String query = "SELECT id_user FROM user1 WHERE username = '" + username + "' AND password = '" + password + "'";
+		String query = "SELECT id_user FROM user1 WHERE user_name = '" + username + "' AND pass_word = '" + password + "'";
 		try {
 			Connection connection = getConnectionToDataBase();
 			Statement statement = connection.createStatement();
@@ -122,7 +129,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 	}
 	
 	private int getUserId(String user) {
-		String query = "SELECT id_user FROM user1 WHERE username = '" + user + "'";
+		String query = "SELECT id_user FROM user1 WHERE user_name = '" + user + "'";
+//		String query = "SELECT id_user FROM user1 WHERE username = '" + user + "'";
 		int id_user = -1;
 		try {
 			Connection connection = getConnectionToDataBase();
@@ -138,7 +146,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 	}
 	
 	public int removeUserFromAllChats(String user) throws RemoteException {
-		String query = String.format("SELECT id_agenda_item FROM users_on_chat WHERE id_user = %d;", getUserId(user));
+		String query = String.format("SELECT agenda_item FROM users_on_chat WHERE user_on_chat = %d;", getUserId(user));
+//		String query = String.format("SELECT id_agenda_item FROM users_on_chat WHERE id_user = %d;", getUserId(user));
 		String query2 = String.format("DELETE FROM users_on_chat WHERE id_user = %d", getUserId(user));
 		int id_agenda_item = 0;
 		try {
@@ -146,7 +155,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(query);
 			while (resultSet.next()) {
-				id_agenda_item = resultSet.getInt("id_agenda_item");
+				id_agenda_item = resultSet.getInt("agenda_item");
+//				id_agenda_item = resultSet.getInt("id_agenda_item");
 			}
 			statement.execute(query2);
 			System.out.println("Removed " + user);
@@ -240,6 +250,26 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 			System.out.println("RmiServer.getListUpcumingMeetings() " + e.getMessage());
 		}
 		return finalList;
+	}
+	
+	public String getListOtherUsers(String username) throws RemoteException{
+		String query = "SELECT * FROM user1 WHERE user_name <> '" + username + "'";
+		String finalResult="";
+		System.out.println("entering");
+		try {
+			Connection connection = getConnectionToDataBase();
+			Statement statement = connection.createStatement();
+			ResultSet queryResult = statement.executeQuery(query);
+			while (queryResult.next()) {
+				System.out.println("queryResult.next()-> "+queryResult.next());
+				System.out.println("finalResult-> "+finalResult);
+				finalResult+=(queryResult.getString("user_name")+"\n");
+			}
+		} catch (Exception e) {
+			System.out.println("RmiServer.userExists() " + e.getMessage());
+		}
+		System.out.println("returning -> "+finalResult);
+		return finalResult;
 	}
 	
 	public String getListPassedMeetings(String user) throws RemoteException {
@@ -633,6 +663,32 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 			System.out.println("RmiServer.addAgendaItemToMeeting() " + e.getMessage());
 		}
 		return false;
+	}
+
+	@Override
+	public String getOnlineUsers() throws RemoteException {
+		String finalResult="";
+		for(String s : onlineUsers)
+			finalResult+=s+"\n";
+		return finalResult;
+	}
+	
+	public void setUserOnline(String username) throws RemoteException{
+		System.out.println("RMI: adding "+username+" to online usres list");
+		this.onlineUsers.add(username);
+		System.out.println("current list of online users: ");
+		for(String s : onlineUsers)
+			System.out.println(s+"\n");
+		System.out.println("------------------------");
+	}
+	
+	public void deleteUserOnline(String username) throws RemoteException{
+		System.out.println("RMI: deleting "+username+" to online usres list");
+		this.onlineUsers.remove(username);
+		System.out.println("current list of online users: ");
+		for(String s : onlineUsers)
+			System.out.println(s+"\n");
+		System.out.println("------------------------");
 	}
 	
 }
