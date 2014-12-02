@@ -669,7 +669,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 		this.onlineUsers.add(username);
 		
 		HashSet hs = new HashSet();
-		hs.addAll(sessions);
+		hs.addAll(onlineUsers);
 		sessions.clear();
 		sessions.addAll(hs);
 		
@@ -677,6 +677,10 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 		for (String s : onlineUsers)
 			System.out.println(s + "\n");
 		System.out.println("------------------------");
+		System.out.println("current sessions: ");
+		for (String s : sessions)
+			System.out.println(s + "\n");
+		System.out.println("---s--------s-------s------");
 	}
 	
 	public void deleteUserOnline(String username) throws RemoteException {
@@ -684,7 +688,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 		this.onlineUsers.remove(username);
 		
 		HashSet hs = new HashSet();
-		hs.addAll(sessions);
+		hs.addAll(onlineUsers);
 		sessions.clear();
 		sessions.addAll(hs);
 		
@@ -693,6 +697,10 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 		for (String s : onlineUsers)
 			System.out.println(s + "\n");
 		System.out.println("------------------------");
+		System.out.println("current sessions: ");
+		for (String s : sessions)
+			System.out.println(s + "\n");
+		System.out.println("---s--------s-------s------");
 	}
 
 //	@Override
