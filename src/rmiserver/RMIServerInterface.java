@@ -5,10 +5,9 @@ package rmiserver;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 public interface RMIServerInterface extends Remote {
-public boolean userExists(String username) throws RemoteException;
+	public boolean userExists(String username) throws RemoteException;
 	
 	public boolean tryLogin(String username, String password) throws RemoteException;
 	
@@ -61,7 +60,7 @@ public boolean userExists(String username) throws RemoteException;
 	public boolean testIfUserIsOnChat(int id_agenda_item, String user) throws RemoteException;
 	
 	public boolean addMessageToChat(int id_agenda_item, String user, String message) throws RemoteException;
-		
+	
 	public boolean inviteUserToMeeting(String user, int id_meeting) throws RemoteException;
 	
 	public String getListOtherUsers(String username) throws RemoteException;
@@ -70,5 +69,5 @@ public boolean userExists(String username) throws RemoteException;
 	
 	public String getOnlineUsers() throws RemoteException;
 	
-	public void deleteUserOnline(String username)throws RemoteException;
+	public void deleteUserOnline(String username) throws RemoteException;
 }
