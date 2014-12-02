@@ -15,11 +15,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class RMIServer extends UnicastRemoteObject implements RMIServerInterface {
 	private static final long		serialVersionUID	= 20141107L;
 	private HashMap<String, String>	users;
 	private ArrayList<String>		onlineUsers			= new ArrayList<String>();
+	private ArrayList<String>		sessions			= new ArrayList<String>();
 	
 	public RMIServer() throws RemoteException {
 		super();
@@ -138,10 +140,8 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 	}
 	
 	public int removeUserFromAllChats(String user) throws RemoteException {
-		String query = String.format("SELECT agenda_item FROM users_on_chat WHERE user_on_chat = %d;", getUserId(user));
-		// String query =
-		// String.format("SELECT id_agenda_item FROM users_on_chat WHERE id_user = %d;",
-		// getUserId(user));
+//		String query = String.format("SELECT agenda_item FROM users_on_chat WHERE user_on_chat = %d;", getUserId(user));
+		 String query = String.format("SELECT id_agenda_item FROM users_on_chat WHERE id_user = %d;", getUserId(user));
 		String query2 = String.format("DELETE FROM users_on_chat WHERE id_user = %d", getUserId(user));
 		int id_agenda_item = 0;
 		try {
@@ -149,8 +149,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(query);
 			while (resultSet.next()) {
-				id_agenda_item = resultSet.getInt("agenda_item");
-				// id_agenda_item = resultSet.getInt("id_agenda_item");
+				 id_agenda_item = resultSet.getInt("id_agenda_item");
 			}
 			statement.execute(query2);
 			System.out.println("Removed " + user);
@@ -665,24 +664,35 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 		return finalResult;
 	}
 	
+	
 	public void setUserOnline(String username) throws RemoteException {
 		this.onlineUsers.add(username);
+		
+		HashSet hs = new HashSet();
+		hs.addAll(sessions);
+		sessions.clear();
+		sessions.addAll(hs);
+		
+		System.out.println("current online users: ");
 		for (String s : onlineUsers)
 			System.out.println(s + "\n");
 		System.out.println("------------------------");
 	}
 	
 	public void deleteUserOnline(String username) throws RemoteException {
+		System.out.println("trying to remove "+username);
 		this.onlineUsers.remove(username);
+		System.out.println(username+" removed!");	
+		System.out.println("current online users: ");
 		for (String s : onlineUsers)
 			System.out.println(s + "\n");
 		System.out.println("------------------------");
 	}
 
-	@Override
-	public boolean isUserOnline(String username) throws RemoteException {
-		System.out.println("onlineUsers.contains(username); -> "+onlineUsers.contains(username));
-		return onlineUsers.contains(username);
-	}
-	
+//	@Override
+//	public boolean isUserOnline(String username) throws RemoteException {
+//		System.out.println("onlineUsers.contains(username); -> "+onlineUsers.contains(username));
+//		return onlineUsers.contains(username);
+//	}
+//	
 }
