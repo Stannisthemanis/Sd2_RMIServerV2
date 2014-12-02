@@ -678,5 +678,11 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 			System.out.println(s + "\n");
 		System.out.println("------------------------");
 	}
+
+	@Override
+	public boolean isUserOnline(String username) throws RemoteException {
+		System.out.println("onlineUsers.contains(username); -> "+onlineUsers.contains(username));
+		return onlineUsers.contains(username);
+	}
 	
 }
