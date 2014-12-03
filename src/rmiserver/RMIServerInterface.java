@@ -25,6 +25,8 @@ public interface RMIServerInterface extends Remote {
 	
 	public String getMeetingResume(int id_meeting) throws RemoteException;
 	
+	public String getMeetingResumeV2(int id_meeting) throws RemoteException;
+	
 	public String getListOfAgendaItensFromMeeting(int id_meeting) throws RemoteException;
 	
 	public String getListOfInvitesByUser(String user) throws RemoteException;
@@ -69,7 +71,7 @@ public interface RMIServerInterface extends Remote {
 	
 	public String getOnlineUsers() throws RemoteException;
 	
-	public void deleteUserOnline(String username)throws RemoteException;
+	public void deleteUserOnline(String username) throws RemoteException;
 	
-//	public boolean isUserOnline(String username) throws RemoteException;
+	// public boolean isUserOnline(String username) throws RemoteException;
 }
