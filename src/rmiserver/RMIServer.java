@@ -544,6 +544,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 	public boolean addActionItemToMeeting(int id_meeting, String newAction, String user) throws RemoteException {
 		String query = String.format("INSERT INTO action_item (name, id_user, id_meeting) VALUES ('%s', %d, %d)", newAction,
 				getUserId(user), id_meeting);
+		System.out.println("RMI: id_meeting: "+id_meeting+", newAction: "+newAction+", user: "+getUserId(user));
 		try {
 			Connection connection = getConnectionToDataBase();
 			Statement statement = connection.createStatement();
@@ -737,21 +738,6 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 		sessions.clear();
 		sessions.addAll(hs);
 		
-//		System.out.println(username+" removed!");	
-//		System.out.println("current online users: ");
-//		for (String s : onlineUsers)
-//			System.out.println(s + "\n");
-//		System.out.println("------------------------");
-//		System.out.println("current sessions: ");
-//		for (String s : sessions)
-//			System.out.println(s + "\n");
-//		System.out.println("---s--------s-------s------");
-	}
 
-//	@Override
-//	public boolean isUserOnline(String username) throws RemoteException {
-//		System.out.println("onlineUsers.contains(username); -> "+onlineUsers.contains(username));
-//		return onlineUsers.contains(username);
-//	}
-//	
+	}
 }

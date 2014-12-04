@@ -72,6 +72,6 @@ public interface RMIServerInterface extends Remote {
 	public String getOnlineUsers() throws RemoteException;
 	
 	public void deleteUserOnline(String username) throws RemoteException;
-	
+		
 	// public boolean isUserOnline(String username) throws RemoteException;
 }
