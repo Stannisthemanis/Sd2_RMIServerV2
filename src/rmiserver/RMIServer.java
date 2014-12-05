@@ -26,8 +26,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 	public RMIServer() throws RemoteException {
 		super();
 		users = new HashMap<String, String>();
-		users.put("bender", "rodriguez"); // static users and passwords, to
-											// simplify the example
+		users.put("bender", "rodriguez"); 
 		users.put("fry", "philip");
 		users.put("leela", "turanga");
 		users.put("homer", "simpson");
@@ -534,6 +533,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 			Connection connection = getConnectionToDataBase();
 			Statement statement = connection.createStatement();
 			statement.executeUpdate(query);
+			System.out.println("sucess");
 		} catch (Exception e) {
 			System.out.println("RmiServer.addKeyDecisionToAgendaItem() " + e.getMessage());
 			return false;
@@ -581,8 +581,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 			Statement statement = connection.createStatement();
 			ResultSet queryResult = statement.executeQuery(query);
 			while (queryResult.next()) {
-				listOfAction += queryResult.getInt("id_action_item") + "-> " + queryResult.getString("name") + " ---> "
-						+ queryResult.getString("completed") + "\n";
+				listOfAction += queryResult.getInt("id_action_item") + "-> " + queryResult.getString("name") + "\n";
 			}
 		} catch (Exception e) {
 			System.out.println("RmiServer.getListOfActionItensFromUser() " + e.getMessage());
