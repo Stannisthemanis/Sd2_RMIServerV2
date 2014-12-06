@@ -84,6 +84,7 @@ CREATE TABLE invite(
     decision       VARCHAR(20)  DEFAULT 'unread',
     FOREIGN KEY(id_meeting) REFERENCES meeting(id_meeting),
     FOREIGN KEY(id_user) REFERENCES user1(id_user),
+    UNIQUE KEY uniqueInvite (id_meeting ,id_user),
     PRIMARY KEY(id_invite)
 );
 

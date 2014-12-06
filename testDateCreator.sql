@@ -17,6 +17,7 @@ INSERT INTO user1 (username,password,dob) VALUES ('root','root',TIMESTAMP('1988-
 INSERT INTO meeting (title,outcome,id_user,local,s_date,e_date,duration) VALUES ('pastMeeting','responsaveis',1,'sala e4.1',TIMESTAMP('2013-11-14 10:20:00'),TIMESTAMP('2014-11-13 14:20:00'),240);
 INSERT INTO agenda_item (item_to_discuss,id_meeting) VALUES ('Any Other Bussiness',1);
 INSERT INTO invite (id_meeting, id_user, decision) VALUES(1,2,'Yes');
+INSERT INTO invite (id_meeting, id_user, decision) VALUES(1,2,'Yes');
 INSERT INTO message (id_agenda_item, id_user, mdate, messages) VALUES(1,1,TIMESTAMP('2014-11-14 11:10:00'),'ola');
 INSERT INTO message (id_agenda_item, id_user, mdate, messages) VALUES(1,2,TIMESTAMP('2014-11-14 11:20:00'),'oi');
 INSERT INTO message (id_agenda_item, id_user, mdate, messages) VALUES(1,1,TIMESTAMP('2014-11-14 11:30:00'),'1');
