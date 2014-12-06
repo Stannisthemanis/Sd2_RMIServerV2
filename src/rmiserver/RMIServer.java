@@ -627,7 +627,7 @@ public class RMIServer extends UnicastRemoteObject implements RMIServerInterface
 	
 	public String getChatHistoryFromAgendaItem(int id_agenda_item) throws RemoteException {
 		String query = String.format(
-				"SELECT m.mdate, u.username, m.messages FROM message m, user1 u WHERE m.id_agenda_item = %d AND u.id_user = m.id_user;",
+				"SELECT m.mdate, u.username, m.messages FROM message m, user1 u WHERE m.id_agenda_item = %d AND u.id_user = m.id_user ORDER BY 1;",
 				id_agenda_item);
 		String messageHistory = "Chat History:\n";
 		try {

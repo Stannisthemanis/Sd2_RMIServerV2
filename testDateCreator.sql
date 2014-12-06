@@ -22,6 +22,13 @@ INSERT INTO message (id_agenda_item, id_user, mdate, messages) VALUES(1,2,TIMEST
 INSERT INTO message (id_agenda_item, id_user, mdate, messages) VALUES(1,1,TIMESTAMP('2014-11-14 11:30:00'),'1');
 INSERT INTO message (id_agenda_item, id_user, mdate, messages) VALUES(1,2,TIMESTAMP('2014-11-14 11:40:00'),'2');
 INSERT INTO message (id_agenda_item, id_user, mdate, messages) VALUES(1,1,TIMESTAMP('2014-11-14 11:50:00'),'3');
+
+INSERT INTO message (id_agenda_item, id_user, mdate, messages) VALUES(2,1,TIMESTAMP('2014-11-14 11:10:00'),'ola');
+INSERT INTO message (id_agenda_item, id_user, mdate, messages) VALUES(2,2,TIMESTAMP('2014-11-14 11:20:00'),'oi');
+INSERT INTO message (id_agenda_item, id_user, mdate, messages) VALUES(2,1,TIMESTAMP('2014-11-14 11:30:00'),'1');
+INSERT INTO message (id_agenda_item, id_user, mdate, messages) VALUES(2,2,TIMESTAMP('2014-11-14 11:40:00'),'2');
+INSERT INTO message (id_agenda_item, id_user, mdate, messages) VALUES(2,1,TIMESTAMP('2014-11-14 11:50:00'),'3');
+
 INSERT INTO action_item (name, id_user, completed, id_meeting) VALUES ('action item 1',1,'To Be Done',1);
 INSERT INTO action_item (name, id_user, completed, id_meeting) VALUES ('action item 2',1,'Done',1);
 
